@@ -30,136 +30,136 @@
 
     <script>
         //Getting health info
-let health = document.getElementById("health")
-health.value = 500;
+        let health = document.getElementById("health")
+        health.value = 500;
 
-//For the bullets
-let activeBullet = false;
-let bulletx = 0;
-let bullety = 0;    
+        //For the bullets
+        let activeBullet = false;
+        let bulletx = 0;
+        let bullety = 0;    
 
-let bullets1 = [];
-let bullets2 = [];
+        let bullets1 = [];
+        let bullets2 = [];
 
-//player cords
-var p1 = {x: 100, y: 360, speed: 10}
+        //player cords
+        var p1 = {x: 100, y: 360, speed: 10}
 
-//enemies
-let enemyend = false
+        //enemies
+        let enemyend = false
 
-let enemy = [];
-rndy = getRnd(20, window.innerHeight-20);
-rndx = getRnd(window.innerWidth-500, window.innerWidth); 
- 
-function getRnd(min, max){
-    return Math.floor(Math.random()* (max - min + 1) ) + min;
-}
-function update()
-{
-    //test
-    
-    clearScreen();
-    
-
-    for(let i = 0; i < 2; i++){
+        let enemy = [];
+        rndy = getRnd(20, window.innerHeight-20);
+        rndx = getRnd(window.innerWidth-500, window.innerWidth); 
         
-        
-        enemy.push([rndx, rndy]);
-
-        circle(enemy[i][0], enemy[i][1], 40, "red")
-        if (enemy[i][0] > -5){
-            enemy[i][0] -= 4;
+        function getRnd(min, max){
+            return Math.floor(Math.random()* (max - min + 1) ) + min;
+        }
+        function update()
+        {
+            //test 2.0
             
-            if (enemy[i][0] < -1 && enemy[i][1] <= window.innerWidth){
-                enemyend = true;      
-            }
-        }  
-    }
-    
-        
-    if (enemyend == true){
-        health.value -= 20;
-        enemyend = false;
-    }
-    
+            clearScreen();
+            
 
-    
-
-    
-    for(let i = 0; i < bullets1.length; i++){
-        for(let j = 0; j < enemy.length; j++){ 
-            let distans = distance(bullets1[i][0], bullets1[i][1], enemy[j][0] + 20, enemy[j][1] + 20);
-            if (distans < 40){
+            for(let i = 0; i < 2; i++){
                 
-                alert(" x " + enemy[j][0] +" "+ bullets1[i][0] + " y " + bullets1[i][1] +" "+ enemy[j][1]);
+                
+                enemy.push([rndx, rndy]);
+
+                circle(enemy[i][0], enemy[i][1], 40, "red")
+                if (enemy[i][0] > -5){
+                    enemy[i][0] -= 4;
+                    
+                    if (enemy[i][0] < -1 && enemy[i][1] <= window.innerWidth){
+                        enemyend = true;      
+                    }
+                }  
+            }
+            
+                
+            if (enemyend == true){
+                health.value -= 20;
+                enemyend = false;
+            }
+            
+
+            
+
+            
+            for(let i = 0; i < bullets1.length; i++){
+                for(let j = 0; j < enemy.length; j++){ 
+                    let distans = distance(bullets1[i][0], bullets1[i][1], enemy[j][0] + 20, enemy[j][1] + 20);
+                    if (distans < 40){
+                        
+                        alert(" x " + enemy[j][0] +" "+ bullets1[i][0] + " y " + bullets1[i][1] +" "+ enemy[j][1]);
+                    }
+                }
+                //if (distance(bullets2[i][0], bullets2[i][1], enemy[i][0], enemy[i][1]) < 42){
+                //    alert("2")
+                //}
+            
+            }
+            
+            //TEST*****
+            if (keyboard.g){
+                health.value -= 10;
+            }
+            if (keyboard.h){
+                health.value += 10;
+            }
+            //TEST****
+            //Some controls for the plane and the plane picture
+            
+            picture(p1.x, p1.y, "bilder/Plane 1.png")
+            if (keyboard.w){p1.y -= p1.speed}
+            if (keyboard.s){p1.y += p1.speed}
+            if (keyboard.a){p1.x -= p1.speed}
+            if (keyboard.d){p1.x += p1.speed}
+            
+            //Bullets
+            if (keyboard.space){
+                activeBullet = true;
+                bulletx = p1.x +58;
+                bullety = p1.y +48;
+
+                bullets1.push([bulletx, bullety]);
+                bullets2.push([bulletx, bullety + 51]);
+            }
+
+            if(activeBullet == true){
+                for(let i = 0; i < bullets1.length; i++){
+                    bullets1[i][0]+= 20;
+                    bullets1[i][1]+=0;
+
+                    bullets2[i][0]+= 20;
+                    bullets2[i][1]+=0;
+
+                    if (bullets1.length > 100){
+                        bullets1.shift();
+                        bullets2.shift();
+                        
+                    }   
+                    circle(bullets1[i][0] , bullets1[i][1] , 2, "black");
+                    circle(bullets2[i][0]  , bullets2[i][1] , 2, "black");
+                    
+                }
+            }
+
+            //Enemies
+            
+            
+            
+            
+
+
+
+            //ending
+            if (health.value <= 0){
+                alert("Game Over!")
+                
+                
             }
         }
-        //if (distance(bullets2[i][0], bullets2[i][1], enemy[i][0], enemy[i][1]) < 42){
-        //    alert("2")
-        //}
-    
-    }
-    
-    //TEST*****
-    if (keyboard.g){
-        health.value -= 10;
-    }
-    if (keyboard.h){
-        health.value += 10;
-    }
-    //TEST****
-    //Some controls for the plane and the plane picture
-    
-    picture(p1.x, p1.y, "bilder/Plane 1.png")
-    if (keyboard.w){p1.y -= p1.speed}
-    if (keyboard.s){p1.y += p1.speed}
-    if (keyboard.a){p1.x -= p1.speed}
-    if (keyboard.d){p1.x += p1.speed}
-    
-    //Bullets
-    if (keyboard.space){
-        activeBullet = true;
-        bulletx = p1.x +58;
-        bullety = p1.y +48;
-
-        bullets1.push([bulletx, bullety]);
-        bullets2.push([bulletx, bullety + 51]);
-    }
-
-    if(activeBullet == true){
-        for(let i = 0; i < bullets1.length; i++){
-            bullets1[i][0]+= 20;
-            bullets1[i][1]+=0;
-
-            bullets2[i][0]+= 20;
-            bullets2[i][1]+=0;
-
-            if (bullets1.length > 100){
-                bullets1.shift();
-                bullets2.shift();
-                
-            }   
-            circle(bullets1[i][0] , bullets1[i][1] , 2, "black");
-            circle(bullets2[i][0]  , bullets2[i][1] , 2, "black");
-            
-        }
-    }
-
-    //Enemies
-    
-    
-    
-    
-
-
-
-    //ending
-    if (health.value <= 0){
-        alert("Game Over!")
-        
-        
-    }
-}
 
 
     </script>
