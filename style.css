@@ -1,0 +1,26 @@
+body{
+    background-image: url(bilder/Background.png);
+    background-size: cover;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1{
+    position: relative;
+    text-align: center;
+    color: red;
+    font-size: 5em;
+}
+
+.play{
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid blue;
+    border-radius: 7px;
+    background-color: blue;
+    color: red;
+    font-size: 32px;
+    font-weight: bold;
+    width: 5em;
+    margin: 5px auto;
+    text-decoration: none;   
+}

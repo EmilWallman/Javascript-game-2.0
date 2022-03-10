@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script import time;></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+
+
+    <style>
+    body{ background-color: yellow};    
+
+        
+    </style>
+    
+     
+        
+    
+    
+    
+    <script src="simple.js">
+        
+        
+
+        var zombies = [] ;
+        var i = 0;
+        let activeBullet = false;
+        while (i < 40)
+        {
+            zombies.push({
+            x: random(totalWidth),
+            y: random(totalHeight),
+            speed: random(1,6) });
+
+            i += 1;
+        }
+        
+        
+        
+        let bulletx = 0;
+        let bullety= 0;    
+        
+        let directionx = 0;
+        let directiony = 0;
+        let mousex = 0;
+        let mousey = 0;
+        let test = 0;
+        var p1 = {x: 10, y: 10, speed: 10}
+        const mousecords = [];
+        const bullets = [];
+        let bulletspeed = 5;
+        function update()
+        {
+            clearScreen();
+            picture(p1.x, p1.y, "bilder/P1-removebg-preview-removebg-preview.png")
+            if (keyboard.w){p1.y -= p1.speed}
+            if (keyboard.s){p1.y += p1.speed}
+            if (keyboard.a){p1.x -= p1.speed}
+            if (keyboard.d){p1.x += p1.speed}
+
+            if (keyboard.space){
+                activeBullet = true;
+                bulletx = p1.x;
+                bullety = p1.y; 
+                mousex = mouse.x;
+                mousey = mouse.y;
+                bullets.push([bulletx, bullety])
+                mousecords.push([mousex, mousey])
+            }
+
+            
+
+            if(activeBullet == true){
+                for(let i = 0; i < bullets.length; i++){
+                    bullets[i][0]+= 50;
+                    bullets[i][1]+=0;
+                    if (bullets.length > 500){
+                    bullets.shift();
+                    
+                    }
+                    directionx = mouse.x - p1.x;
+                    directiony = mouse.y - p1.y;
+                    /*
+                    bullets[i][0]+= mousecords[i][0];
+                    bullets[i][1]+= mousecords[i][0];
+                    */
+                    circle(bullets[i][0], bullets[i][1], 4, "black")
+                }
+                
+                
+            }
+        
+
+
+
+            /*
+            var i = 0;
+            
+            while (i < 40)
+            {
+                var zombie = zombies[i];
+                https://spelprogrammering.nu/bilder/zombie.png    
+                picture(zombie.x, zombie.y, "https://spelprogrammering.nu/bilder/zombie.png")
+                
+                if (zombie.x < mouse.x)
+                    zombie.x += zombie.speed;
+                else
+                    zombie.x -= zombie.speed;
+
+                if (zombie.y < mouse.y)
+                    zombie.y += zombie.speed;
+                
+                else
+                    zombie.y -= zombie.speed;
+
+                if (distance(mouse, zombie) < 5)
+                {
+                    alert("game over BITCH");
+                    stopUpdate();
+                }
+                i++;
+            */
+
+                
+            
+        
+        }
+
+
+        
+        /*Huvudloopen*/
+        /*
+        y = prompt("WALLAH SÄTT IN Y KORDINAT BROR");
+        x = prompt("WALLAH SÄTT IN EN X KORDINAT BRAM");
+        
+        color1 = prompt("WALLAHI SÄTT IN EN FÄRG FÖR CIRKLARNA");
+        color2 = prompt("WALLA
+        HI SÄTT IN EN FÄRG FÖR CIRKLARNA");
+        color3 = prompt("WALLAHI SÄTT IN EN FÄRG FÖR CIRKLARNA");
+
+        size = prompt("BROR BARA SISTA FRÅGAN NU :D LANGA IN EN STORLEK");
+
+        circle(x, y, size, color1);
+        circle(x + 10, y + 10, size, color2);
+        circle(x + 20, y + 20, size, color3);
+        */
+
+        
+        
+        /*
+        circle(200, 200, 100, "red");
+        circle(180, 180, 10,  "blue");
+        circle(220, 180, 10, "blue");
+                
+        rectangle(170, 220, 60, 20, "blue");
+
+        rectangle(195, 200, 10, 10, "black");
+
+        color = prompt("kan du ange en din färg?");
+
+        circle(100, 100, 20, color);
+        circle(200, 100, 20, color);
+        */
+        /*
+        x = 0;
+        function setup(){
+            fill('yellow');
+            const cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
+            let text = "";
+            for (let i = 0; i < cars.length; i++) {
+            text += cars[i];
+            return text
+            }
+        }
+        function update(){
+            clearScreen();
+            fill('black');
+            x++;
+            circle(200 + x,200,10, "red");
+            
+        }
+        */
+    </script>
+</body>
+</html>
