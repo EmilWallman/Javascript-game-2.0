@@ -10,8 +10,8 @@
  
 </head>
 <body>
-  
-    <progress id="health" value="100" max="500"></progress>
+    
+    <progress id="health" value="100" max="100"></progress>
     <style>
         
 
@@ -29,9 +29,12 @@
     </style>
 
     <script>
+        //sound
+        
+
         //Getting health info
         let health = document.getElementById("health")
-        health.value = 500;
+        health.value = 100;
 
         //For the bullets
         let activeBullet = false;
@@ -48,37 +51,48 @@
         let enemyend = false
 
         let enemy = [];
-        rndy = getRnd(20, window.innerHeight-20);
-        rndx = getRnd(window.innerWidth-500, window.innerWidth); 
+       
+
+        preloadSound("sound/Bulletsound.mp3");
+        preloadSound("sound/bb.mp3");
         
         function getRnd(min, max){
             return Math.floor(Math.random()* (max - min + 1) ) + min;
         }
+
         function update()
         {
             //test 2.0
-            
+    
             clearScreen();
             
-
-            for(let i = 0; i < 2; i++){
-                
+            
+            playSound("sound/bb.mp3", 1);
+            for(let i = 0; i < 5; i++){
+                let rndy = getRnd(20, window.innerHeight-20);
+                let rndx = getRnd(window.innerWidth-500, window.innerWidth);        
                 
                 enemy.push([rndx, rndy]);
 
                 circle(enemy[i][0], enemy[i][1], 40, "red")
-                if (enemy[i][0] > -5){
+                if (enemy[i][0] > -11){
                     enemy[i][0] -= 4;
                     
-                    if (enemy[i][0] < -1 && enemy[i][1] <= window.innerWidth){
-                        enemyend = true;      
+
+                    if(enemy[i][0] < 0){
+                        enemyend = true;
                     }
+
+                    //if (enemy[i][0] < 0 && enemy[i][0] <= window.innerWidth ){
+                    //    enemyend = true;      
+                    //}
                 }  
             }
             
                 
             if (enemyend == true){
-                health.value -= 20;
+                health.value -= 10;
+                enemy.shift();
                 enemyend = false;
             }
             
@@ -90,14 +104,11 @@
                 for(let j = 0; j < enemy.length; j++){ 
                     let distans = distance(bullets1[i][0], bullets1[i][1], enemy[j][0] + 20, enemy[j][1] + 20);
                     if (distans < 40){
-                        
-                        alert(" x " + enemy[j][0] +" "+ bullets1[i][0] + " y " + bullets1[i][1] +" "+ enemy[j][1]);
+                                
+                        enemy.shift();
+                        //alert(" x " + enemy[j][0] +" "+ bullets1[i][0] + " y " + bullets1[i][1] +" "+ enemy[j][1]);
                     }
                 }
-                //if (distance(bullets2[i][0], bullets2[i][1], enemy[i][0], enemy[i][1]) < 42){
-                //    alert("2")
-                //}
-            
             }
             
             //TEST*****
@@ -121,12 +132,14 @@
                 activeBullet = true;
                 bulletx = p1.x +58;
                 bullety = p1.y +48;
-
+                playSound("sound/Bulletsound.mp3", 1)
+                stopSound("sound/Bulletsound.mp3", 1)
                 bullets1.push([bulletx, bullety]);
                 bullets2.push([bulletx, bullety + 51]);
             }
 
             if(activeBullet == true){
+                
                 for(let i = 0; i < bullets1.length; i++){
                     bullets1[i][0]+= 20;
                     bullets1[i][1]+=0;
