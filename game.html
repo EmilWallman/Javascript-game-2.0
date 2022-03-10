@@ -54,20 +54,26 @@
        
 
         preloadSound("sound/Bulletsound.mp3");
-        preloadSound("sound/bb.mp3");
+
+
+        let song = new Audio ("sound/bb.mp3")
         
         function getRnd(min, max){
             return Math.floor(Math.random()* (max - min + 1) ) + min;
         }
-
+        song.play();
         function update()
         {
+
+
+            
             //test 2.0
-    
+            
+                
+            
             clearScreen();
             
             
-            playSound("sound/bb.mp3", 1);
             for(let i = 0; i < 5; i++){
                 let rndy = getRnd(20, window.innerHeight-20);
                 let rndx = getRnd(window.innerWidth-500, window.innerWidth);        
@@ -122,7 +128,10 @@
             //Some controls for the plane and the plane picture
             
             picture(p1.x, p1.y, "bilder/Plane 1.png")
-            if (keyboard.w){p1.y -= p1.speed}
+            if (keyboard.w){
+                p1.y -= p1.speed
+
+            }
             if (keyboard.s){p1.y += p1.speed}
             if (keyboard.a){p1.x -= p1.speed}
             if (keyboard.d){p1.x += p1.speed}
@@ -132,8 +141,8 @@
                 activeBullet = true;
                 bulletx = p1.x +58;
                 bullety = p1.y +48;
-                playSound("sound/Bulletsound.mp3", 1)
-                stopSound("sound/Bulletsound.mp3", 1)
+                playSound("sound/Bulletsound.mp3", 0.2)
+                
                 bullets1.push([bulletx, bullety]);
                 bullets2.push([bulletx, bullety + 51]);
             }
@@ -147,13 +156,17 @@
                     bullets2[i][0]+= 20;
                     bullets2[i][1]+=0;
 
+                    if (bullets1[i][0] > window.innerWidth - 500){
+                        bullets1.shift();
+                    }
+
                     if (bullets1.length > 100){
                         bullets1.shift();
                         bullets2.shift();
                         
                     }   
                     circle(bullets1[i][0] , bullets1[i][1] , 2, "black");
-                    circle(bullets2[i][0]  , bullets2[i][1] , 2, "black");
+                    //circle(bullets2[i][0]  , bullets2[i][1] , 2, "black");
                     
                 }
             }
