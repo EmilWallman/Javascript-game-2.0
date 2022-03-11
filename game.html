@@ -62,15 +62,16 @@
             return Math.floor(Math.random()* (max - min + 1) ) + min;
         }
         song.play();
+
+
+        function arraymove (arr, from, to){
+            var element = arr[from];
+            arr.splice(from, 1);
+            arr.splice(to, 0, element);
+        }
         function update()
         {
-
-
-            
-            //test 2.0
-            
-                
-            
+                        
             clearScreen();
             
             
@@ -88,10 +89,6 @@
                     if(enemy[i][0] < 0){
                         enemyend = true;
                     }
-
-                    //if (enemy[i][0] < 0 && enemy[i][0] <= window.innerWidth ){
-                    //    enemyend = true;      
-                    //}
                 }  
             }
             
@@ -110,21 +107,17 @@
                 for(let j = 0; j < enemy.length; j++){ 
                     let distans = distance(bullets1[i][0], bullets1[i][1], enemy[j][0] + 20, enemy[j][1] + 20);
                     if (distans < 40){
-                                
+                        arraymove(bullets1, i, 0);
+                        arraymove(enemy, j, 0);
                         enemy.shift();
-                        //alert(" x " + enemy[j][0] +" "+ bullets1[i][0] + " y " + bullets1[i][1] +" "+ enemy[j][1]);
+                        bullets1.shift();
+                        
+                        
                     }
                 }
             }
             
-            //TEST*****
-            if (keyboard.g){
-                health.value -= 10;
-            }
-            if (keyboard.h){
-                health.value += 10;
-            }
-            //TEST****
+            
             //Some controls for the plane and the plane picture
             
             picture(p1.x, p1.y, "bilder/Plane 1.png")
@@ -141,7 +134,7 @@
                 activeBullet = true;
                 bulletx = p1.x +58;
                 bullety = p1.y +48;
-                playSound("sound/Bulletsound.mp3", 0.2)
+
                 
                 bullets1.push([bulletx, bullety]);
                 bullets2.push([bulletx, bullety + 51]);
@@ -150,15 +143,23 @@
             if(activeBullet == true){
                 
                 for(let i = 0; i < bullets1.length; i++){
-                    bullets1[i][0]+= 20;
+                    bullets1[i][0]+= 10;
                     bullets1[i][1]+=0;
 
                     bullets2[i][0]+= 20;
                     bullets2[i][1]+=0;
 
-                    if (bullets1[i][0] > window.innerWidth - 500){
-                        bullets1.shift();
+                    
+                    for (let j = 0; j < bullets1.length; j++){
+                        let bulletEnd = p1.x + 500;
+                        if (bullets1[j][0] > bulletEnd){
+                            arraymove(bullets1, j, 0);
+                            bullets1.shift();
+                        }
                     }
+                    //if (bullets1[i][0] > window.innerWidth - 500){
+                    //    bullets1.shift();
+                    //}
 
                     if (bullets1.length > 100){
                         bullets1.shift();
