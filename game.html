@@ -77,7 +77,7 @@
             
             for(let i = 0; i < 5; i++){
                 let rndy = getRnd(20, window.innerHeight-20);
-                let rndx = getRnd(window.innerWidth-500, window.innerWidth);        
+                let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
                 
                 enemy.push([rndx, rndy]);
 
@@ -88,6 +88,7 @@
 
                     if(enemy[i][0] < 0){
                         enemyend = true;
+                        arraymove(enemy, i, 1);
                     }
                 }  
             }
@@ -107,10 +108,10 @@
                 for(let j = 0; j < enemy.length; j++){ 
                     let distans = distance(bullets1[i][0], bullets1[i][1], enemy[j][0] + 20, enemy[j][1] + 20);
                     if (distans < 40){
-                        arraymove(bullets1, i, 0);
+                        arraymove(bullets1, i, 1);
                         arraymove(enemy, j, 0);
                         enemy.shift();
-                        bullets1.shift();
+                        bullets1.shift(1);
                         
                         
                     }
@@ -149,28 +150,21 @@
                     bullets2[i][0]+= 20;
                     bullets2[i][1]+=0;
 
-                    
-                    for (let j = 0; j < bullets1.length; j++){
-                        let bulletEnd = p1.x + 500;
-                        if (bullets1[j][0] > bulletEnd){
-                            arraymove(bullets1, j, 0);
-                            bullets1.shift();
-                        }
-                    }
-                    //if (bullets1[i][0] > window.innerWidth - 500){
-                    //    bullets1.shift();
-                    //}
-
-                    if (bullets1.length > 100){
-                        bullets1.shift();
-                        bullets2.shift();
+                    if (bullets1.length > 200){
+                        bullets1.shift(1);
+                        bullets2.shift(1);
                         
                     }   
                     circle(bullets1[i][0] , bullets1[i][1] , 2, "black");
                     //circle(bullets2[i][0]  , bullets2[i][1] , 2, "black");
-                    
+                    if (bullets1[i][0] > window.innerWidth){
+                        arraymove(bullets1, i, 1);
+                        bullets1.shift(1);
+                    }
                 }
             }
+
+            
 
             //Enemies
             
