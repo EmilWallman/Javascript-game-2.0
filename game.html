@@ -30,9 +30,10 @@
 
     <script>
         //enemies
-        let enemyend = false
-        let enemyspeed = 1;
+        let enemyspeed = 3;
         let enemy = [];
+        let enemyCount = 8;
+
         //Getting health info
         let health = document.getElementById("health")
         health.value = 100;
@@ -41,25 +42,15 @@
         let activeBullet = false;
         let bulletx = 0;
         let bullety = 0;    
-
         let bullets = [];
-        let bulletsspeed = 15
+        let bulletsspeed = 10
 
         //player cords
-        var p1 = {x: 100, y: 360, speed: 10}
+        var p1 = {x: 100, y: 360, speed: 8}
         
         
-        //Clouds in the end and beginning of the canvas
         
-
         //sound
-        
-
-        
-
-       
-        
-
         preloadSound("sound/Bulletsound.mp3");
 
 
@@ -68,6 +59,9 @@
         function getRnd(min, max){
             return Math.floor(Math.random()* (max - min + 1) ) + min;
         }
+        
+        
+        
         song.play();
 
 
@@ -76,63 +70,26 @@
             arr.splice(from, 1);
             arr.splice(to, 0, element);
         }
+
+
+
         function update()
-        {
-                
+        {     
             clearScreen();
             
+            //lägg till poäng för varje man dödar
+            //lägg till en till spelare
+            //lägg till musik och ljud för skott typ
+            //healthbars till fienden
             
-            for(let i = 0; i < 5; i++){
-                let rndy = getRnd(20, window.innerHeight-20);
-                let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
-                
-                enemy.push([rndx, rndy]);
-
-                circle(enemy[i][0], enemy[i][1], 40, "red")
-                if (enemy[i][0] > -11){
-                    enemy[i][0] -= enemyspeed;
-                    
-
-                    if(enemy[i][0] < 0){
-                        enemyend = true;
-                        arraymove(enemy, i, 1);
-                    }
-                }  
-            }
-            
-                
-            if (enemyend == true){
-                health.value -= 10;
-                enemy.shift();
-                enemyend = false;
-            }
             
 
-            
-
-            /*
-            for(let i = 0; i < bullets1.length; i++){
-                for(let j = 0; j < enemy.length; j++){ 
-                    let distans = distance(bullets1[i][0], bullets1[i][1], enemy[j][0] + 20, enemy[j][1] + 20);
-                    if (distans < 40){
-                        arraymove(bullets1, i, 1);
-                        arraymove(enemy, j, 0);
-                        enemy.shift();
-                        bullets1.shift(1);
-                        
-                        
-                    }
-                }
-            }
-            */  
+           
             
             //Some controls for the plane and the plane picture
             
             picture(p1.x, p1.y, "bilder/Plane 1.png")
-            if (keyboard.w){
-                p1.y -= p1.speed
-
-            }
+            if (keyboard.w){p1.y -= p1.speed}
             if (keyboard.s){p1.y += p1.speed}
             if (keyboard.a){p1.x -= p1.speed}
             if (keyboard.d){p1.x += p1.speed}
@@ -155,12 +112,9 @@
                     circle(bullets[i][0] , bullets[i][1] , 2, "black");
                     
                     
-                    
-                    /*
-                    if (bullets1[i][0] > window.innerWidth){
-                        arraymove(bullets1, i, 1);
-                        bullets1.shift(1);
-                    }*/
+                    if(bullets.length > 200){
+                        bullets.shift();
+                    } 
                 }
             }
 
@@ -168,7 +122,33 @@
 
             //Enemies
             
+            for(let i = 0; i < enemyCount; i++){
+                let rndy = getRnd(20, window.innerHeight-20);
+                let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
+                
+                enemy.push([rndx, rndy]);
+
+                circle(enemy[i][0], enemy[i][1], 40, "red")
+                if (enemy[i][0] > 0){
+                    enemy[i][0] -= enemyspeed;
+                }
+                else{
+                    arraymove(enemy, i, 0);
+                    enemy.shift();
+                    health.value -= 10
+                }  
+            }
             
+            for(let i = 0; i < bullets.length; i++){
+                for(let j = 0; j < enemy.length; j++){
+                    let distanceBE = distance(bullets[i][0] + 2, bullets[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20)
+                    if (distanceBE < 40){
+                        arraymove(enemy, j, 0)
+                        enemy.shift();
+                        
+                    } 
+                }
+            }
             
             
 
