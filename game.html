@@ -29,10 +29,12 @@
     </style>
 
     <script>
+        let points= 0;
+        let time = 0;
         //enemies
         let enemyspeed = 3;
         let enemy = [];
-        let enemyCount = 8;
+        let enemyCount = 10;
 
         //Getting health info
         let health = document.getElementById("health")
@@ -43,7 +45,8 @@
         let bulletx = 0;
         let bullety = 0;    
         let bullets = [];
-        let bulletsspeed = 10
+        let bulletsspeed = 10;
+        let bulletDelay = 0;
 
         //player cords
         var p1 = {x: 100, y: 360, speed: 8}
@@ -76,13 +79,20 @@
         function update()
         {     
             clearScreen();
+            if (time < 85){
+                time++;
+            }
             
+            if (time == 85){
+                points++;
+                time = 0;
+            }
             //lägg till poäng för varje man dödar
             //lägg till en till spelare
             //lägg till musik och ljud för skott typ
             //healthbars till fienden
             
-            
+            text(300, 300, 20, "Points:" + points, "blue");
 
            
             
@@ -95,14 +105,21 @@
             if (keyboard.d){p1.x += p1.speed}
             
             //Bullets
-            if (keyboard.space){
+
+            if (bulletDelay < 20){
+                bulletDelay++;
+            }
+
+            if (keyboard.space && bulletDelay == 20){
                 activeBullet = true;
                 bulletx = p1.x +58;
                 bullety = p1.y +48;
-
+                bulletDelay = 0;
                 bullets.push([bulletx, bullety]);
                
             }
+
+            
 
             if(activeBullet == true){
                 
@@ -112,7 +129,7 @@
                     circle(bullets[i][0] , bullets[i][1] , 2, "black");
                     
                     
-                    if(bullets.length > 200){
+                    if(bullets.length > 50){
                         bullets.shift();
                     } 
                 }
@@ -136,11 +153,13 @@
                     arraymove(enemy, i, 0);
                     enemy.shift();
                     health.value -= 10
+                    
                 }  
             }
             
             for(let i = 0; i < bullets.length; i++){
-                for(let j = 0; j < enemy.length; j++){
+                if(bullets[i][0] < window.innerWidth - 10){
+                    for(let j = 0; j < enemy.length; j++){
                     let distanceBE = distance(bullets[i][0] + 2, bullets[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20)
                     if (distanceBE < 40){
                         arraymove(enemy, j, 0)
@@ -148,6 +167,8 @@
                         
                     } 
                 }
+                }
+                
             }
             
             
