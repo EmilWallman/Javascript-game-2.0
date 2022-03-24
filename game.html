@@ -29,8 +29,10 @@
     </style>
 
     <script>
+        //for points and time keeping
         let points= 0;
         let time = 0;
+
         //enemies
         let enemyspeed = 3;
         let enemy = [];
@@ -41,16 +43,26 @@
         health.value = 100;
 
         //For the bullets
-        let activeBullet = false;
-        let bulletx = 0;
-        let bullety = 0;    
-        let bullets = [];
-        let bulletsspeed = 10;
-        let bulletDelay = 0;
+        
+        //p1
+        let bulletxP1 = 0;
+        let bulletyP1 = 0;    
+        let bulletP1 = [];
+        let bulletspeedP1 = 10;
+        let bulletDelayP1 = 0;
+        let activeBulletP1 = false;
+
+        //p2
+        let bulletxP2 = 0;
+        let bulletyP2 = 0;
+        let bulletP2 = [];
+        let bulletspeedP2 = 10;
+        let bulletDelayP2 = 0;
+        let activeBulletP2 = false;
 
         //player cords
         var p1 = {x: 100, y: 360, speed: 8}
-        
+        var p2 = {x: 100, y: 460, speed: 8}
         
         
         //sound
@@ -97,44 +109,80 @@
            
             
             //Some controls for the plane and the plane picture
-            
+            //player 1
             picture(p1.x, p1.y, "bilder/Plane 1.png")
             if (keyboard.w){p1.y -= p1.speed}
             if (keyboard.s){p1.y += p1.speed}
             if (keyboard.a){p1.x -= p1.speed}
             if (keyboard.d){p1.x += p1.speed}
             
-            //Bullets
+            //player 2
+            picture(p2.x, p2.y, "bilder/Plane 1.png")
+            if (keyboard.up){p2.y -= p2.speed}
+            if (keyboard.down){p2.y += p2.speed}
+            if (keyboard.left){p2.x -= p2.speed}
+            if (keyboard.right){p2.x += p2.speed}
+            
+            //bullets player 1
 
-            if (bulletDelay < 20){
-                bulletDelay++;
+            if (bulletDelayP1 < 20){
+                bulletDelayP1++;
             }
 
-            if (keyboard.space && bulletDelay == 20){
-                activeBullet = true;
-                bulletx = p1.x +58;
-                bullety = p1.y +48;
-                bulletDelay = 0;
-                bullets.push([bulletx, bullety]);
+            if (keyboard.space && bulletDelayP1 == 20){
+                activeBulletP1 = true;
+                bulletxP1 = p1.x +58;
+                bulletyP1 = p1.y +48;
+                bulletDelayP1 = 0;
+                bulletP1.push([bulletxP1, bulletyP1]);
                
             }
 
             
 
-            if(activeBullet == true){
+            if(activeBulletP1 == true){
                 
-                for(let i = 0; i < bullets.length; i++){
-                    bullets[i][0]+= bulletsspeed;
-                    bullets[i][1]+=0;
-                    circle(bullets[i][0] , bullets[i][1] , 2, "black");
+                for(let i = 0; i < bulletP1.length; i++){
+                    bulletP1[i][0]+= bulletspeedP1;
+                    bulletP1[i][1]+=0;
+                    circle(bulletP1[i][0] , bulletP1[i][1] , 2, "black");
                     
                     
-                    if(bullets.length > 50){
-                        bullets.shift();
+                    if(bulletP1.length > 50){
+                        bulletP1.shift();
                     } 
                 }
             }
 
+            //Bullets player 2
+            if (bulletDelayP2 < 20){
+                bulletDelayP2++;
+            }
+
+            if (keyboard.enter && bulletDelayP2 == 20){
+                activeBulletP2 = true;
+                bulletxP2 = p2.x +58;
+                bulletyP2 = p2.y +48;
+                bulletDelayP2 = 0;
+                bulletP2.push([bulletxP2, bulletyP2]);
+               
+            }
+
+            
+
+            if(activeBulletP2 == true){
+                
+                for(let i = 0; i < bulletP2.length; i++){
+                    bulletP2[i][0]+= bulletspeedP2;
+                    bulletP2[i][1]+=0;
+                    circle(bulletP2[i][0] , bulletP2[i][1] , 2, "black");
+                    
+                    
+                    if(bulletP2.length > 50){
+                        bulletP2.shift();
+                    } 
+                }
+            }
             
 
             //Enemies
@@ -157,14 +205,13 @@
                 }  
             }
             
-            for(let i = 0; i < bullets.length; i++){
-                if(bullets[i][0] < window.innerWidth - 10){
+            for(let i = 0; i < bulletP1.length; i++){
+                if(bulletP1[i][0] < window.innerWidth - 10){
                     for(let j = 0; j < enemy.length; j++){
-                    let distanceBE = distance(bullets[i][0] + 2, bullets[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20)
+                    let distanceBE = distance(bulletP1[i][0] + 2, bulletP1[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20)
                     if (distanceBE < 40){
                         arraymove(enemy, j, 0)
-                        enemy.shift();
-                        
+                        enemy.shift();  
                     } 
                 }
                 }
