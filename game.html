@@ -29,21 +29,23 @@
     </style>
 
     <script>
+        
         //for points and time keeping
         let points= 0;
         let time = 0;
 
         //enemies
-        let enemyspeed = 3;
+        let enemyspeed = 2;
         let enemy = [];
         let enemyCount = 10;
+        let enemyBar = [];
+        let enemyHp = 100;
 
         //Getting health info
         let health = document.getElementById("health")
         health.value = 100;
 
         //For the bullets
-        
         //p1
         let bulletxP1 = 0;
         let bulletyP1 = 0;    
@@ -59,17 +61,20 @@
         let bulletspeedP2 = 10;
         let bulletDelayP2 = 0;
         let activeBulletP2 = false;
+        
 
         //player cords
-        var p1 = {x: 100, y: 360, speed: 8}
-        var p2 = {x: 100, y: 460, speed: 8}
+        var p1 = {x: 100, y: window.innerHeight / 4, speed: 8}
+        var p2 = {x: 100, y: window.innerHeight - (window.innerHeight / 4) -100 , speed: 8}
+        preloadSound("sound/gunSound.mp3");
+
         
         
         //sound
-        preloadSound("sound/Bulletsound.mp3");
+        
+        
 
-
-        let song = new Audio ("sound/bb.mp3")
+        
         
         function getRnd(min, max){
             return Math.floor(Math.random()* (max - min + 1) ) + min;
@@ -77,7 +82,7 @@
         
         
         
-        song.play();
+        
 
 
         function arraymove (arr, from, to){
@@ -91,62 +96,50 @@
         function update()
         {     
             clearScreen();
-            if (time < 85){
+            //points messured in time and how long you can survive
+             
+            if (time < 85){ 
                 time++;
             }
-            
             if (time == 85){
                 points++;
                 time = 0;
             }
-            //lägg till poäng för varje man dödar
-            //lägg till en till spelare
-            //lägg till musik och ljud för skott typ
-            //healthbars till fienden
+            text((window.innerWidth / 2) - 160, 80, 50, "Points:" + points, "blue");
             
-            text(300, 300, 20, "Points:" + points, "blue");
-
-           
+            //lägg till musik och ljud för skott typ
             
             //Some controls for the plane and the plane picture
             //player 1
-            picture(p1.x, p1.y, "bilder/Plane 1.png")
+            picture(p1.x, p1.y, "bilder/Plane P1.png")
             if (keyboard.w){p1.y -= p1.speed}
             if (keyboard.s){p1.y += p1.speed}
             if (keyboard.a){p1.x -= p1.speed}
             if (keyboard.d){p1.x += p1.speed}
             
             //player 2
-            picture(p2.x, p2.y, "bilder/Plane 1.png")
+            picture(p2.x, p2.y, "bilder/Plane P2.png")
             if (keyboard.up){p2.y -= p2.speed}
             if (keyboard.down){p2.y += p2.speed}
             if (keyboard.left){p2.x -= p2.speed}
             if (keyboard.right){p2.x += p2.speed}
             
             //bullets player 1
-
             if (bulletDelayP1 < 20){
                 bulletDelayP1++;
             }
-
             if (keyboard.space && bulletDelayP1 == 20){
                 activeBulletP1 = true;
                 bulletxP1 = p1.x +58;
                 bulletyP1 = p1.y +48;
                 bulletDelayP1 = 0;
-                bulletP1.push([bulletxP1, bulletyP1]);
-               
+                bulletP1.push([bulletxP1, bulletyP1]);  
             }
-
-            
-
             if(activeBulletP1 == true){
-                
                 for(let i = 0; i < bulletP1.length; i++){
                     bulletP1[i][0]+= bulletspeedP1;
                     bulletP1[i][1]+=0;
                     circle(bulletP1[i][0] , bulletP1[i][1] , 2, "black");
-                    
                     
                     if(bulletP1.length > 50){
                         bulletP1.shift();
@@ -158,44 +151,37 @@
             if (bulletDelayP2 < 20){
                 bulletDelayP2++;
             }
-
             if (keyboard.enter && bulletDelayP2 == 20){
                 activeBulletP2 = true;
                 bulletxP2 = p2.x +58;
                 bulletyP2 = p2.y +48;
                 bulletDelayP2 = 0;
-                bulletP2.push([bulletxP2, bulletyP2]);
-               
+                bulletP2.push([bulletxP2, bulletyP2]);               
             }
-
-            
-
-            if(activeBulletP2 == true){
-                
+            if(activeBulletP2 == true){   
                 for(let i = 0; i < bulletP2.length; i++){
                     bulletP2[i][0]+= bulletspeedP2;
                     bulletP2[i][1]+=0;
                     circle(bulletP2[i][0] , bulletP2[i][1] , 2, "black");
-                    
-                    
+                    playSound("sound/gunSound.mp3", 1)          
                     if(bulletP2.length > 50){
                         bulletP2.shift();
                     } 
                 }
             }
             
-
             //Enemies
-            
             for(let i = 0; i < enemyCount; i++){
                 let rndy = getRnd(20, window.innerHeight-20);
                 let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
                 
-                enemy.push([rndx, rndy]);
+                enemy.push([rndx, rndy, enemyHp]);
 
                 circle(enemy[i][0], enemy[i][1], 40, "red")
+                rectangle(enemy[i][0] - 50, enemy[i][1] - 60, enemy[i][2], 15, "green")
                 if (enemy[i][0] > 0){
                     enemy[i][0] -= enemyspeed;
+                     
                 }
                 else{
                     arraymove(enemy, i, 0);
@@ -204,29 +190,46 @@
                     
                 }  
             }
-            
             for(let i = 0; i < bulletP1.length; i++){
-                if(bulletP1[i][0] < window.innerWidth - 10){
+                if(bulletP1[i][0] < (window.innerWidth - 10)){
                     for(let j = 0; j < enemy.length; j++){
-                    let distanceBE = distance(bulletP1[i][0] + 2, bulletP1[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20)
-                    if (distanceBE < 40){
-                        arraymove(enemy, j, 0)
-                        enemy.shift();  
-                    } 
-                }
+                        let distanceBEp1 = distance(bulletP1[i][0] + 2, bulletP1[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20);
+                        if (enemy[j][2] > 0){
+                            if (distanceBEp1 < 40){
+                                enemy[j][2] -= 3;
+                            } 
+                        }
+                        
+                    }
                 }
                 
             }
-            
-            
-
-
+            for(let i = 0; i < bulletP2.length; i++){
+                if(bulletP2[i][0] < (window.innerWidth - 10)){
+                    for(let j = 0; j < enemy.length; j++){
+                        let distanceBEp2 = distance(bulletP2[i][0] + 2, bulletP2[i][1] + 2, enemy[j][0] + 20, enemy[j][1] + 20);
+                        if(enemy[j][2] > 0){
+                            if (distanceBEp2 < 40){
+                                enemy[j][2] -= 3;
+                            } 
+                        }
+                    }
+                }
+                
+            }
+            for(let i = 0; i < enemy.length; i++){
+                if(enemy[i][2] < 0){
+                    arraymove(enemy, i, 0);
+                    enemy.shift();  
+                            
+                }
+            }
 
             //ending
             if (health.value <= 0){
-                alert("Game Over!")
-                
-                
+                text(400, (window.innerHeight / 2) - 100, 100, "Game Over!", "red")
+                text(150, (window.innerHeight / 2), 100, " Du fick " + points + " poäng!", "red")
+                stopUpdate();
             }
         }
 
