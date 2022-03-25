@@ -99,6 +99,9 @@
         {     
             clearScreen();
             backgroundSound.play();
+
+            text(100, 100, 20, enemy.length, "black");
+            text(100, 200, 20, bulletP1.length, "black");
             //points messured in time and how long you can survive
              
             if (time < 85){ 
@@ -177,14 +180,7 @@
             
 
             //Enemies
-            for(let i = 0; i < enemyCount; i++){
-                let rndy = getRnd(20, window.innerHeight-20);
-                let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
-                
-                enemy.push([rndx, rndy, enemyHp]);
-
-                circle(enemy[i][0], enemy[i][1], 40, "red")
-                rectangle(enemy[i][0] - 50, enemy[i][1] - 60, enemy[i][2], 15, "green")
+            for(let i = 0; i < enemy.length; i++){
                 if (enemy[i][0] > 0){
                     enemy[i][0] -= enemyspeed;
                      
@@ -195,7 +191,19 @@
                     health.value -= 10
                     
                 }  
+                
+                circle(enemy[i][0], enemy[i][1], 40, "red")
+                rectangle(enemy[i][0] - 50, enemy[i][1] - 60, enemy[i][2], 15, "green")
             }
+            for(let i = 0; enemy.length < enemyCount; i++){
+                let rndy = getRnd(20, window.innerHeight-20);
+                let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
+                
+                enemy.push([rndx, rndy, enemyHp]);
+
+                
+            }
+            
             for(let i = 0; i < bulletP1.length; i++){
                 if(bulletP1[i][0] < (window.innerWidth - 10)){
                     for(let j = 0; j < enemy.length; j++){
