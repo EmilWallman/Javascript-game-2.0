@@ -63,17 +63,19 @@
         let activeBulletP2 = false;
         
 
-        //player cords
+        //player cords 
         var p1 = {x: 100, y: window.innerHeight / 4, speed: 8}
         var p2 = {x: 100, y: window.innerHeight - (window.innerHeight / 4) -100 , speed: 8}
-        preloadSound("sound/gunSound.mp3");
-
         
+
         
         //sound
-        
-        
+        let backgroundSound = new Audio("sound/background.mp3")
 
+        function bulletSound(){
+            let gun = new Audio("sound/gunSound.mp3");
+            gun.play();
+        }
         
         
         function getRnd(min, max){
@@ -96,6 +98,7 @@
         function update()
         {     
             clearScreen();
+            backgroundSound.play();
             //points messured in time and how long you can survive
              
             if (time < 85){ 
@@ -133,6 +136,7 @@
                 bulletxP1 = p1.x +58;
                 bulletyP1 = p1.y +48;
                 bulletDelayP1 = 0;
+                bulletSound();
                 bulletP1.push([bulletxP1, bulletyP1]);  
             }
             if(activeBulletP1 == true){
@@ -141,7 +145,7 @@
                     bulletP1[i][1]+=0;
                     circle(bulletP1[i][0] , bulletP1[i][1] , 2, "black");
                     
-                    if(bulletP1.length > 50){
+                    if(bulletP1.length > 9){
                         bulletP1.shift();
                     } 
                 }
@@ -156,6 +160,7 @@
                 bulletxP2 = p2.x +58;
                 bulletyP2 = p2.y +48;
                 bulletDelayP2 = 0;
+                bulletSound();        
                 bulletP2.push([bulletxP2, bulletyP2]);               
             }
             if(activeBulletP2 == true){   
@@ -163,13 +168,14 @@
                     bulletP2[i][0]+= bulletspeedP2;
                     bulletP2[i][1]+=0;
                     circle(bulletP2[i][0] , bulletP2[i][1] , 2, "black");
-                    playSound("sound/gunSound.mp3", 1)          
-                    if(bulletP2.length > 50){
+                    
+                    if(bulletP2.length > 9){
                         bulletP2.shift();
-                    } 
+                    }    
                 }
             }
             
+
             //Enemies
             for(let i = 0; i < enemyCount; i++){
                 let rndy = getRnd(20, window.innerHeight-20);
