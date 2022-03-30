@@ -10,8 +10,10 @@
  
 </head>
 <body>
-    
+    <!--The healthbar for both players-->
     <progress id="health" value="100" max="100"></progress>
+
+    <a href = "menu.html"></a>
     <style>
         
 
@@ -100,8 +102,6 @@
             clearScreen();
             backgroundSound.play();
 
-            text(100, 100, 20, enemy.length, "black");
-            text(100, 200, 20, bulletP1.length, "black");
             //points messured in time and how long you can survive
              
             if (time < 85){ 
