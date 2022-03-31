@@ -10,7 +10,28 @@ h1{
     color: red;
     font-size: 5em;
 }
-
+h2{
+    position:relative;
+    text-align: center;
+    padding-left: 7em;
+    padding-right: 7em;
+    padding-top: 4em;
+    font-size: 2em;
+}
+h3{
+    
+    position:relative;
+    text-align: center;
+    padding-left: 7em;
+    padding-right: 7em;
+    padding-top: 1em;
+    font-size: 2em;
+}
+p{
+    text-align: center;
+    color: red;
+    font-size: 2em;
+}
 .play{
     text-align: center;
     vertical-align: middle;
@@ -23,4 +44,19 @@ h1{
     width: 5em;
     margin: 5px auto;
     text-decoration: none;   
+}
+
+.back{
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid blue;
+    border-radius: 7px;
+    background-color: blue;
+    color: red;
+    font-size: 32px;
+    font-weight: bold;
+    width: 5em;
+    margin: 5px auto;
+    text-decoration: none;   
+
 }

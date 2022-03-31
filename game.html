@@ -13,12 +13,15 @@
     <!--The healthbar for both players-->
     <progress id="health" value="100" max="100"></progress>
 
-    <a href = "menu.html"></a>
     <style>
         
 
-    
-        body{ background-color: lightblue};    
+        /*Style for the healthbar and the background*/
+        body{ 
+            
+            background-image: url(bilder/Background.png);
+            background-size: cover;
+        }    
         progress::-moz-progress-bar{background: green;}
         progress{background: green;
             width: 30em;
@@ -31,19 +34,21 @@
     </style>
 
     <script>
-        
-        //for points and time keeping
+        //All the variables used in the game
+
+
+        //For points and time keeping
         let points= 0;
         let time = 0;
 
-        //enemies
+        //Enemies and Enemies Healthbars
         let enemyspeed = 2;
         let enemy = [];
         let enemyCount = 10;
         let enemyBar = [];
         let enemyHp = 100;
 
-        //Getting health info
+        //Getting health info for the healthbar
         let health = document.getElementById("health")
         health.value = 100;
 
@@ -65,30 +70,28 @@
         let activeBulletP2 = false;
         
 
-        //player cords 
+        //player cords and speed
         var p1 = {x: 100, y: window.innerHeight / 4, speed: 8}
         var p2 = {x: 100, y: window.innerHeight - (window.innerHeight / 4) -100 , speed: 8}
         
 
         
-        //sound
+        //BAckground sound
         let backgroundSound = new Audio("sound/background.mp3")
 
+        //A function for the gunsound
         function bulletSound(){
             let gun = new Audio("sound/gunSound.mp3");
             gun.play();
         }
         
-        
+        //A function that givers out random numbers, used for getting cords for the enemies
         function getRnd(min, max){
             return Math.floor(Math.random()* (max - min + 1) ) + min;
         }
         
         
-        
-        
-
-
+        //Function that moves one number to the begining of the array
         function arraymove (arr, from, to){
             var element = arr[from];
             arr.splice(from, 1);
@@ -96,14 +99,15 @@
         }
 
 
-
+        //Start of the function that has the whole game inside
         function update()
         {     
             clearScreen();
+
+            //starts the background song
             backgroundSound.play();
 
             //points messured in time and how long you can survive
-             
             if (time < 85){ 
                 time++;
             }
@@ -111,11 +115,12 @@
                 points++;
                 time = 0;
             }
+            //the point text
             text((window.innerWidth / 2) - 160, 80, 50, "Points:" + points, "blue");
             
-            //lägg till musik och ljud för skott typ
             
-            //Some controls for the plane and the plane picture
+            
+            //Controls for the plane and the plane picture
             //player 1
             picture(p1.x, p1.y, "bilder/Plane P1.png")
             if (keyboard.w){p1.y -= p1.speed}
@@ -130,10 +135,15 @@
             if (keyboard.left){p2.x -= p2.speed}
             if (keyboard.right){p2.x += p2.speed}
             
+
+
             //bullets player 1
+            //Delay between the bullets
             if (bulletDelayP1 < 20){
                 bulletDelayP1++;
             }
+
+            //loop that sets cords for the bullets and plays the sound for bullets
             if (keyboard.space && bulletDelayP1 == 20){
                 activeBulletP1 = true;
                 bulletxP1 = p1.x +58;
@@ -142,6 +152,8 @@
                 bulletSound();
                 bulletP1.push([bulletxP1, bulletyP1]);  
             }
+
+            //It spawns the bullets and moves them forward and takes away bullets so there are no more than 9
             if(activeBulletP1 == true){
                 for(let i = 0; i < bulletP1.length; i++){
                     bulletP1[i][0]+= bulletspeedP1;
@@ -155,6 +167,7 @@
             }
 
             //Bullets player 2
+            //Same as Bullets player 1
             if (bulletDelayP2 < 20){
                 bulletDelayP2++;
             }
@@ -180,6 +193,8 @@
             
 
             //Enemies
+
+            //A loop that destroys the enmeys when they reach the end of the window and it moves them forward also spawns them and their healthbar
             for(let i = 0; i < enemy.length; i++){
                 if (enemy[i][0] > 0){
                     enemy[i][0] -= enemyspeed;
@@ -195,15 +210,16 @@
                 circle(enemy[i][0], enemy[i][1], 40, "red")
                 rectangle(enemy[i][0] - 50, enemy[i][1] - 60, enemy[i][2], 15, "green")
             }
+
+            //uses the random function to make cords to spawn the enemies 
             for(let i = 0; enemy.length < enemyCount; i++){
                 let rndy = getRnd(20, window.innerHeight-20);
                 let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
                 
                 enemy.push([rndx, rndy, enemyHp]);
-
-                
             }
             
+            //A loop that shrinks the enemys healthbar when it colides with the bullet for player 1
             for(let i = 0; i < bulletP1.length; i++){
                 if(bulletP1[i][0] < (window.innerWidth - 10)){
                     for(let j = 0; j < enemy.length; j++){
@@ -215,9 +231,9 @@
                         }
                         
                     }
-                }
-                
+                }   
             }
+            //same but for player 2
             for(let i = 0; i < bulletP2.length; i++){
                 if(bulletP2[i][0] < (window.innerWidth - 10)){
                     for(let j = 0; j < enemy.length; j++){
@@ -231,6 +247,7 @@
                 }
                 
             }
+            //It deletes the enemy when the healthbar is at 0
             for(let i = 0; i < enemy.length; i++){
                 if(enemy[i][2] < 0){
                     arraymove(enemy, i, 0);
@@ -239,7 +256,7 @@
                 }
             }
 
-            //ending
+            //An ending 
             if (health.value <= 0){
                 text(400, (window.innerHeight / 2) - 100, 100, "Game Over!", "red")
                 text(150, (window.innerHeight / 2), 100, " Du fick " + points + " poäng!", "red")
