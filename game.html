@@ -198,24 +198,22 @@
             for(let i = 0; i < enemy.length; i++){
                 if (enemy[i][0] > 0){
                     enemy[i][0] -= enemyspeed;
-                     
                 }
+
                 else{
                     arraymove(enemy, i, 0);
                     enemy.shift();
                     health.value -= 10
-                    
-                }  
-                
-                circle(enemy[i][0], enemy[i][1], 40, "red")
-                rectangle(enemy[i][0] - 50, enemy[i][1] - 60, enemy[i][2], 15, "green")
+                }
+
+                picture(enemy[i][0], enemy[i][1], "bilder/hellicopter.png")
+                rectangle(enemy[i][0] + 5, enemy[i][1] - 40, enemy[i][2], 15, "green")
             }
 
             //uses the random function to make cords to spawn the enemies 
             for(let i = 0; enemy.length < enemyCount; i++){
                 let rndy = getRnd(20, window.innerHeight-20);
                 let rndx = getRnd(window.innerWidth, window.innerWidth + 800);        
-                
                 enemy.push([rndx, rndy, enemyHp]);
             }
             
@@ -258,8 +256,8 @@
 
             //An ending 
             if (health.value <= 0){
-                text(400, (window.innerHeight / 2) - 100, 100, "Game Over!", "red")
-                text(150, (window.innerHeight / 2), 100, " Du fick " + points + " poäng!", "red")
+                text(400, (window.innerHeight / 2) - 100, 100, "Game Over!", "black")
+                text(150, (window.innerHeight / 2), 100, " Du fick " + points + " poäng!", "black")
                 stopUpdate();
             }
         }
